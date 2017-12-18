@@ -27,6 +27,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.svg = d3.select('svg');
     this.svg.attr('width', this.width).attr('height', this.height)
+      .call(d3.zoom().on("zoom", () => {
+        this.svg.attr("transform", d3.event.transform)
+      }))
+      .append("g")
 
     // Creating the simulation with 500 -ve strength and force center is center of the svg canvas.
     this.simulation = d3.forceSimulation()
