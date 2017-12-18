@@ -263,6 +263,8 @@ export class DrawableArea {
                 }
             })
 
+            // for each to the family areas we have to draw to lines from the crossing point
+            // also for the first layer of orphans
             families.forEach(area => {
                 // draw to lines one from the connection point to the center of the area centernode
                 // and the other one from that point to the
@@ -271,113 +273,118 @@ export class DrawableArea {
                 this.drawLine(exactx, exacty2, familyx, exacty2);
                 this.drawLine(familyx, exacty2, familyx, familyy);
             })
-            // for each to the family areas we have to draw to lines from the crossing point
-            // also for the first layer of orphans
-            for (DrawableArea area : families) {
-                // draw to lines one from the connection point to the center of the area centernode
-                // and the other one from that point to the
-                double familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
-                double familyy = y + area.getY() + area.centerNode.getY() + area.centerNode.getHeight() - nodepadding;
-                drawLine(exactx, exacty2, familyx, exacty2);
-                drawLine(familyx, exacty2, familyx, familyy);
-            }
 
-            int count = 0, row = 0;
-            double connectionx = exactx, connectiony = exacty2;
-            for (DrawableArea area : orphans) {
+            let count = 0, row = 0;
+            let connectionx = exactx, connectiony = exacty2;
+
+            orphans.forEach(area => {
                 if ((count % 2) == 0) {
                     row++;
                     // draw line from connection point to new connection point for each new row
                     if (row > 1) {
-                        double newcy = y + area.getY() + area.centerNode.getY() + (area.centerNode.getHeight() / 2);
-                        drawLine(connectionx, connectiony, connectionx, newcy);
+                        let newcy = y + area.getY() + area.centerNode.getY() + (area.centerNode.getHeight() / 2);
+                        this.drawLine(connectionx, connectiony, connectionx, newcy);
                         connectiony = newcy;
                     }
                 }
 
                 // draw line for first row similar to families
                 if (row == 1) {
-                    double familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
-                    double familyy = y + area.getY() + area.centerNode.getY() + area.centerNode.getHeight() - nodepadding;
-                    drawLine(exactx, exacty2, familyx, exacty2);
-                    drawLine(familyx, exacty2, familyx, familyy);
+                    let familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
+                    let familyy = y + area.getY() + area.centerNode.getY() + area.centerNode.getHeight() - Constant.nodepadding;
+                    this.drawLine(exactx, exacty2, familyx, exacty2);
+                    this.drawLine(familyx, exacty2, familyx, familyy);
                 } else {
                     // draw line from new connection point to area
                     if (x + area.getX() + area.centerNode.getX() >= connectionx) {
-                        drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + nodepadding, connectiony);
+                        this.drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + Constant.nodepadding, connectiony);
                     } else {
-                        drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + area.centerNode.getWidth() - nodepadding, connectiony);
+                        this.drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + area.centerNode.getWidth() - Constant.nodepadding, connectiony);
                     }
                 }
                 count++;
-            }
+            })
         }
-        if (childAreas.size() == 1) {
+
+        if (this.childAreas.length == 1) {
             // draw connecting line
-            double exactx = x + centerNode.getX() + centerNode.getWidth() / 2;
-            double exacty1 = y + centerNode.getY() + centerNode.getHeight() - nodepadding;
-            DrawableArea area = childAreas.get(0);
-            double exacty2 = y + area.getY() + area.centerNode.getY() + nodepadding;
-            drawLine(exactx, exacty1, exactx, exacty2);
-        } else if (childAreas.size() > 1) {
-            double exactx = x + centerNode.getX() + centerNode.getWidth() / 2;
-            double exacty1 = y + centerNode.getY() + centerNode.getHeight() - nodepadding;
+            let exactx = x + this.centerNode.getX() + this.centerNode.getWidth() / 2;
+            let exacty1 = y + this.centerNode.getY() + this.centerNode.getHeight() - Constant.nodepadding;
+            let area = this.childAreas[0];
+            let exacty2 = y + area.getY() + area.centerNode.getY() + Constant.nodepadding;
+            this.drawLine(exactx, exacty1, exactx, exacty2);
+        } else if (this.childAreas.length > 1) {
+            let exactx = x + this.centerNode.getX() + this.centerNode.getWidth() / 2;
+            let exacty1 = y + this.centerNode.getY() + this.centerNode.getHeight() - Constant.nodepadding;
             // first part of line to crosspoint
             //                DrawableArea area = parentAreas.get(0);
-            double exacty2 = exacty1 + layerpadding;
-            drawLine(exactx, exacty1, exactx, exacty2);
+            let exacty2 = exacty1 + Constant.layerpadding;
+            this.drawLine(exactx, exacty1, exactx, exacty2);
 
-            List < DrawableArea > orphans = new ArrayList<>();
-            List < DrawableArea > families = new ArrayList<>();
-            for (DrawableArea area : childAreas) {
+            let orphans: DrawableArea[] = [];
+            let families: DrawableArea[] = [];
+
+            this.childAreas.forEach(area => {
                 if (area.hasChildren()) {
-                    families.add(area);
+                    families.push(area);
                 } else {
-                    orphans.add(area);
+                    orphans.push(area);
                 }
-            }
+            })
 
             // for each to the family areas we have to draw to lines from the crossing point
             // also for the first layer of orphans
-            for (DrawableArea area : families) {
+            families.forEach(area => {
                 // draw to lines one from the connection point to the center of the area centernode
                 // and the other one from that point to the
-                double familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
-                double familyy = y + area.getY() + area.centerNode.getY() + nodepadding;
-                drawLine(exactx, exacty2, familyx, exacty2);
-                drawLine(familyx, exacty2, familyx, familyy);
-            }
+                let familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
+                let familyy = y + area.getY() + area.centerNode.getY() + Constant.nodepadding;
+                this.drawLine(exactx, exacty2, familyx, exacty2);
+                this.drawLine(familyx, exacty2, familyx, familyy);
+            })
 
-            int count = 0, row = 0;
-            double connectionx = exactx, connectiony = exacty2;
-            for (DrawableArea area : orphans) {
+            let count = 0, row = 0;
+            let connectionx = exactx, connectiony = exacty2;
+
+            orphans.forEach(area => {
                 if ((count % 2) == 0) {
                     row++;
                     // draw line from connection point to new connection point for each new row
                     if (row > 1) {
-                        double newcy = y + area.getY() + area.centerNode.getY() + (area.centerNode.getHeight() / 2);
-                        drawLine(connectionx, connectiony, connectionx, newcy);
+                        let newcy = y + area.getY() + area.centerNode.getY() + (area.centerNode.getHeight() / 2);
+                        this.drawLine(connectionx, connectiony, connectionx, newcy);
                         connectiony = newcy;
                     }
                 }
 
                 // draw line for first row similar to families
                 if (row == 1) {
-                    double familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
-                    double familyy = y + area.getY() + area.centerNode.getY() + nodepadding;
-                    drawLine(exactx, exacty2, familyx, exacty2);
-                    drawLine(familyx, exacty2, familyx, familyy);
+                    let familyx = x + area.getX() + area.centerNode.getX() + (area.centerNode.getWidth() / 2);
+                    let familyy = y + area.getY() + area.centerNode.getY() + Constant.nodepadding;
+                    this.drawLine(exactx, exacty2, familyx, exacty2);
+                    this.drawLine(familyx, exacty2, familyx, familyy);
                 } else {
                     // draw line from new connection point to area
                     if (x + area.getX() + area.centerNode.getX() >= connectionx) {
-                        drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + nodepadding, connectiony);
+                        this.drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + Constant.nodepadding, connectiony);
                     } else {
-                        drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + area.centerNode.getWidth() - nodepadding, connectiony);
+                        this.drawLine(connectionx, connectiony, x + area.getX() + area.centerNode.getX() + area.centerNode.getWidth() - Constant.nodepadding, connectiony);
                     }
                 }
                 count++;
-            }
+            });
+
         }
+    }
+
+    drawLine(startx: number, starty: number, endx: number, endy: number) {
+        /*
+        context2d.beginPath();
+        context2d.moveTo(startx, starty);
+        context2d.lineTo(endx, endy);
+        context2d.setLineWidth(2);
+        context2d.stroke();
+        */
     }
 
 
