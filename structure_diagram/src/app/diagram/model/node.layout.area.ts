@@ -13,7 +13,8 @@ export class NodeLayout {
         this.node = node;
         this.width = 200 + (2 * Constant.nodepadding)
         let metadataSpace = 0;
-        if (node.getMetaData().size > 1) {
+        console.log(node)
+        if (node.metaData.size > 1) {
             metadataSpace = node.getMetaData().size - 1;
         }
         this.height = 45 + (2 * Constant.nodepadding) + (10 * metadataSpace);
@@ -63,6 +64,13 @@ export class NodeLayout {
     draw(x: number, y: number) {
         let exactx = x + this.x;
         let exacty = y + this.y;
+
+        Constant.svg.append('rect')
+            .attr('x', exactx + Constant.nodepadding)
+            .attr('y', exacty + Constant.nodepadding)
+            .attr('width', 200)
+            .attr('height', this.height - (Constant.nodepadding))
+            .attr('fill', '#22aa94');
         /*
         context2d.beginPath();
         context2d.rect(exactx + nodepadding, exacty + nodepadding, 200, height - (nodepadding));

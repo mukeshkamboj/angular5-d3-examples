@@ -1,5 +1,6 @@
 export class Constant {
 
+    public static svg: any;
     public static nodepadding: number = 10;
     public static layerpadding: number = 20;
 

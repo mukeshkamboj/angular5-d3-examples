@@ -1,28 +1,28 @@
 export class Diagram {
-    private name: String;
-    private type: String;
-    private metaData: Map<String, String>;
-    private children: Diagram[];
-    private parents: Diagram[];
+    public name: String;
+    public type: String;
+    public metaData: Map<String, String>;
+    public children: Diagram[] = [];
+    public parents: Diagram[] = [];
 
 
-    getName(): String {
+    public getName(): String {
         return this.name;
     }
 
-    getType(): String {
+    public getType(): String {
         return this.type;
     }
 
-    getMetaData(): Map<String, String> {
+    public getMetaData(): Map<String, String> {
         return this.metaData;
     }
 
-    getChildren(): Diagram[] {
+    public getChildren(): Diagram[] {
         return this.children;
     }
 
-    getParents(): Diagram[] {
+    public getParents(): Diagram[] {
         return this.parents;
     }
 

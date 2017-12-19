@@ -19,14 +19,17 @@ export class DrawableArea {
         this.width = this.centerNode.getWidth();
         this.height = this.centerNode.getHeight();
 
-        nodeVO.getChildren().forEach(element => {
-            this.childAreas.push(new DrawableArea(element));
-        });
+        if (nodeVO.children != null) {
+            nodeVO.children.forEach(element => {
+                this.childAreas.push(new DrawableArea(element));
+            });
+        }
 
-        nodeVO.getParents().forEach(element => {
-            this.parentAreas.push(new DrawableArea(element));
-        });
-
+        if (nodeVO.parents != null) {
+            nodeVO.parents.forEach(element => {
+                this.parentAreas.push(new DrawableArea(element));
+            });
+        }
         if (this.childAreas.length == 1) {
             const onlyChild = this.childAreas[0];
             this.positionSingleArea(onlyChild, false);
@@ -150,7 +153,7 @@ export class DrawableArea {
     }
 
     hasChildren(): Boolean {
-        return this.centerNode.getNode().getChildren().length != 0;
+        return this.centerNode.getNode().children.length != 0;
     }
 
     public positionSingleArea(area: DrawableArea, up: boolean) {
@@ -233,7 +236,7 @@ export class DrawableArea {
     }
 
     hasParents(): Boolean {
-        return this.centerNode.getNode().getParents().length != 0;
+        return this.centerNode.getNode().parents.length != 0;
     }
 
     drawConnections(x: number, y: number) {

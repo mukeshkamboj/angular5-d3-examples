@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as d3 from "d3";
 import { Constant } from './Constant';
+import { plainToClass } from 'class-transformer';
+import { Diagram } from './diagram/model/diagram.model';
+import { LayoutManager } from './diagram/layoutmanager';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +24,17 @@ export class AppComponent implements OnInit {
   private height: number = 600;
   private width: number = 950;
   title = 'app';
+  private diagram: Diagram;
+
 
   constructor() { }
 
   ngOnInit() {
+    this.diagram = plainToClass(Diagram, Constant.NODES as Object);
+    console.log(this.diagram);
+    Constant.svg = d3.select('svg');
+    LayoutManager.draw(this.diagram);
+    /*
     this.svg = d3.select('svg');
     this.svg.attr('width', this.width).attr('height', this.height)
       .call(d3.zoom().on("zoom", () => {
@@ -92,6 +102,7 @@ export class AppComponent implements OnInit {
 
     // Provind the links data to force simulations.
     this.simulation.force('link').links(Constant.LINKS)
+    */
   }
 
 }
