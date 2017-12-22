@@ -15,21 +15,12 @@ export class DrawableArea {
     private parentAreas: DrawableArea[] = [];
 
     constructor(nodeVO: Diagram) {
-        this.centerNode = new NodeLayout(nodeVO);
-        this.width = this.centerNode.getWidth();
-        this.height = this.centerNode.getHeight();
 
-        if (nodeVO.children != null) {
-            nodeVO.children.forEach(element => {
-                this.childAreas.push(new DrawableArea(element));
-            });
-        }
+        this.calculateNodeAreaForCenterNode(nodeVO);
+        this.calculateTheHightAndWidthOfCenterNode();
+        this.calculateTheAreaOfChildNodes(nodeVO);
+        this.calculateTheAreaOfParentNodes(nodeVO);
 
-        if (nodeVO.parents != null) {
-            nodeVO.parents.forEach(element => {
-                this.parentAreas.push(new DrawableArea(element));
-            });
-        }
         if (this.childAreas.length == 1) {
             const onlyChild = this.childAreas[0];
             this.positionSingleArea(onlyChild, false);
@@ -79,7 +70,32 @@ export class DrawableArea {
 
     }
 
-    positionOrphanAreas(areas: DrawableArea[], up: boolean) {
+    private calculateNodeAreaForCenterNode(nodeVO: Diagram) {
+        this.centerNode = NodeLayout.createNodeLayout(nodeVO)
+    }
+
+    private calculateTheHightAndWidthOfCenterNode() {
+        this.width = this.centerNode.getWidth();
+        this.height = this.centerNode.getHeight();
+    }
+
+    private calculateTheAreaOfChildNodes(nodeVO: Diagram) {
+        if (nodeVO.children != null) {
+            nodeVO.children.forEach(element => {
+                this.childAreas.push(new DrawableArea(element));
+            });
+        }
+    }
+
+    private calculateTheAreaOfParentNodes(nodeVO: Diagram) {
+        if (nodeVO.parents != null) {
+            nodeVO.parents.forEach(element => {
+                this.parentAreas.push(new DrawableArea(element));
+            });
+        }
+    }
+
+    private positionOrphanAreas(areas: DrawableArea[], up: boolean) {
         let leftColumn = false;
 
         let increment_leftside = 0;
@@ -180,40 +196,40 @@ export class DrawableArea {
         return this.centerNode.getNode().children.length != 0;
     }
 
-    public positionSingleArea(area: DrawableArea, up: boolean) {
-        let centerx = this.centerNode.getX() + (this.centerNode.getWidth() / 2);
-        let areacenterx = area.centerNode.getX() + (area.centerNode.getWidth() / 2);
+    public positionSingleArea(connectedNode: DrawableArea, calculateUppersideOfCenterNode: boolean) {
+        let centerNodeVerticallyMidPoint = this.centerNode.getX() + (this.centerNode.getWidth() / 2);
+        let connectedNodeVerticallyMidPoint = connectedNode.centerNode.getX() + (connectedNode.centerNode.getWidth() / 2);
 
-        let newx = centerx - areacenterx;
-        if (newx < 0) {
-            this.incrementWidth(0 - newx, true);
-            newx = 0;
+        let verticallyMidPointDifference = centerNodeVerticallyMidPoint - connectedNodeVerticallyMidPoint;
+        if (verticallyMidPointDifference < 0) {
+            this.incrementWidth(0 - verticallyMidPointDifference, true);
+            verticallyMidPointDifference = 0;
         }
-        if (area.getWidth() > this.width) {
-            this.incrementWidth(area.getWidth() - this.width, false);
+        if (connectedNode.getWidth() > this.width) {
+            this.incrementWidth(connectedNode.getWidth() - this.width, false);
         }
 
         let newy = 0;
-        if (!up) {
+        if (!calculateUppersideOfCenterNode) {
             newy = this.centerNode.getY() + this.centerNode.getHeight() + Constant.layerpadding;
-            let increment = newy + area.getHeight() - this.height;
+            let increment = newy + connectedNode.getHeight() - this.height;
             if (increment > 0) {
-                this.incrementHeigth(increment, up);
+                this.incrementHeigth(increment, calculateUppersideOfCenterNode);
             }
         } else {
-            newy = this.centerNode.getY() - (Constant.layerpadding + area.getHeight());
+            newy = this.centerNode.getY() - (Constant.layerpadding + connectedNode.getHeight());
             if (newy < 0) {
-                this.incrementHeigth(0 - newy, up);
+                this.incrementHeigth(0 - newy, calculateUppersideOfCenterNode);
                 newy = 0;
             }
         }
 
-        area.setPosition(newx, newy);
+        connectedNode.setPosition(verticallyMidPointDifference, newy);
     }
 
-    incrementWidth(increment: number, left: boolean) {
+    incrementWidth(increment: number, calculateRelativeConnectedNodes: boolean) {
         // shift node and each drawable area relative position
-        if (left) {
+        if (calculateRelativeConnectedNodes) {
             this.centerNode.setPosition(this.centerNode.getX() + increment, this.centerNode.getY());
             this.childAreas.forEach(child => {
                 child.setPosition(child.getX() + increment, child.getY());
@@ -229,8 +245,8 @@ export class DrawableArea {
         this.width = this.width + increment;
     }
 
-    incrementHeigth(increment: number, up: boolean) {
-        if (up) {
+    incrementHeigth(increment: number, calculateRelativeConnectedNodes: boolean) {
+        if (calculateRelativeConnectedNodes) {
             this.centerNode.setPosition(this.centerNode.getX(), this.centerNode.getY() + increment);
 
             this.childAreas.forEach(child => {
@@ -336,13 +352,13 @@ export class DrawableArea {
         if (this.childAreas.length == 1) {
             // draw connecting line
             let exactx = x + this.centerNode.getX() + this.centerNode.getWidth() / 2;
-            let exacty1 = y + this.centerNode.getY() + this.centerNode.getHeight() - Constant.nodepadding;
+            let exacty1 = y + this.centerNode.getY() + this.centerNode.getHeight();
             let area = this.childAreas[0];
             let exacty2 = y + area.getY() + area.centerNode.getY() + Constant.nodepadding;
             this.drawLine(exactx, exacty1, exactx, exacty2);
         } else if (this.childAreas.length > 1) {
             let exactx = x + this.centerNode.getX() + this.centerNode.getWidth() / 2;
-            let exacty1 = y + this.centerNode.getY() + this.centerNode.getHeight() - Constant.nodepadding;
+            let exacty1 = y + this.centerNode.getY() + this.centerNode.getHeight();
             // first part of line to crosspoint
             //                DrawableArea area = parentAreas.get(0);
             let exacty2 = exacty1 + Constant.layerpadding;

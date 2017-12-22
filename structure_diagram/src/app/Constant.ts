@@ -26,19 +26,20 @@ export class Constant {
                         },
                         "parents": [
                             {
-                                "type": "Organisation",
+                                "type": "Person",
                                 "name": "Drs. Versluls",
                                 "metaData": {
                                     "dob": "Jan 1, 1973"
                                 },
                                 "parents": []
-                            }
+                            },
+
                         ]
                     }
                 ]
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Eltan Zibenberg",
                 "metaData": {
                     "dob": "Mar 26, 1978"
@@ -46,7 +47,7 @@ export class Constant {
                 "parents": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Anat Levi",
                 "metaData": {
                     "dob": "Mar 1, 1978"
@@ -61,7 +62,7 @@ export class Constant {
                 },
                 "parents": [
                     {
-                        "type": "Organisation",
+                        "type": "Person",
                         "name": "Drs. Versluls",
                         "metaData": {
                             "dob": "Mar 26, 1978"
@@ -87,7 +88,7 @@ export class Constant {
                 "parents": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Shaull Ben Arav",
                 "metaData": {
                     "dob": "Mar 26, 1978"
@@ -95,7 +96,7 @@ export class Constant {
                 "parents": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Domaine Du Castel",
                 "metaData": {
                     "dob": "Mar 26, 1978"
@@ -103,7 +104,7 @@ export class Constant {
                 "parents": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Bravdo Winery",
                 "metaData": {
                     "dob": "Mar 26, 1978"
@@ -111,7 +112,7 @@ export class Constant {
                 "parents": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Diederlk Linders-Wllkinson",
                 "metaData": {
                     "dob": "Mar 26, 1978"
@@ -121,14 +122,14 @@ export class Constant {
         ],
         "children": [
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Domaine Du Castel",
                 "metaData": {
                     "dob": "Jan 1, 1973"
                 },
                 "children": [
                     {
-                        "type": "Organisation",
+                        "type": "Person",
                         "name": "Binyamina",
                         "metaData": {
                             "dob": "Jan 1, 1973"
@@ -138,7 +139,7 @@ export class Constant {
                 ]
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "testorg3",
                 "metaData": {
                     "dob": "Jan 1, 1973"
@@ -146,7 +147,7 @@ export class Constant {
                 "children": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Betreereeresdfsefesd ereere",
                 "metaData": {
                     "dob": ""
@@ -154,7 +155,7 @@ export class Constant {
                 "children": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Test Acc",
                 "metaData": {
                     "dob": "Jan 1, 1973"
@@ -162,14 +163,14 @@ export class Constant {
                 "children": []
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Golan Heights Syrah",
                 "metaData": {
                     "dob": "Jan 1, 1973"
                 },
                 "children": [
                     {
-                        "type": "Organisation",
+                        "type": "Person",
                         "name": "nogbeter.nl",
                         "metaData": {
                             "dob": "Jan 1, 1973"
@@ -177,7 +178,7 @@ export class Constant {
                         "children": []
                     },
                     {
-                        "type": "Organisation",
+                        "type": "Person",
                         "name": "Binyamina",
                         "metaData": {
                             "dob": "Jan 1, 1973"
@@ -187,14 +188,14 @@ export class Constant {
                 ]
             },
             {
-                "type": "Organisation",
+                "type": "Person",
                 "name": "Pelter Winery",
                 "metaData": {
                     "dob": "Jan 1, 1973"
                 },
                 "children": [
                     {
-                        "type": "Organisation",
+                        "type": "Person",
                         "name": "Binyamina",
                         "metaData": {
                             "dob": "Jan 1, 1973"

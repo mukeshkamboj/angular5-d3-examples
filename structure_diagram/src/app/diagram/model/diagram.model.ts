@@ -1,7 +1,7 @@
 export class Diagram {
     public name: String;
     public type: String;
-    public metaData: Map<String, String>;
+    public metaData: Map<String, String> = new Map<String, String>();
     public children: Diagram[] = [];
     public parents: Diagram[] = [];
 
