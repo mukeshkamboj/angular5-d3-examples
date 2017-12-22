@@ -8,10 +8,8 @@ export class LayoutManager {
         const mainArea = new DrawableArea(center);
         let width = Math.trunc(mainArea.getWidth());
         let height = Math.trunc(mainArea.getHeight());
-        let parentWidth = width > 800 ? 800 : (width + 20);
-        let parentHeight = height > 600 ? 600 : (height + 20);
-        Constant.svg.attr('height', 960);
-        Constant.svg.attr('width', 600);
+        console.log("width : " + width)
+        console.log("Height : " + height)
         mainArea.draw(0, 0)
     }
 

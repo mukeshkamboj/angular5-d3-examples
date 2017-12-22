@@ -70,7 +70,7 @@ export class NodeLayout {
             .attr('y', exacty + Constant.nodepadding)
             .attr('width', 200)
             .attr('height', this.height - (Constant.nodepadding))
-            .attr('fill', '#22aa94');
+            .attr('fill', '#2e7c6b');
         /*
         context2d.beginPath();
         context2d.rect(exactx + nodepadding, exacty + nodepadding, 200, height - (nodepadding));
@@ -104,6 +104,12 @@ export class NodeLayout {
         }
         canvas.getContext2d().closePath();
         */
+
+        Constant.svg.append('text')
+            .attr('x', dataXStart + Constant.nodepadding)
+            .attr('y', dataYStart + Constant.nodepadding * 2)
+            .attr('dy', '.35em')
+            .text(this.node.name)
     }
 
 }

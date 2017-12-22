@@ -53,6 +53,30 @@ export class DrawableArea {
             this.positionFamilyAreas(families, false);
         }
 
+        // same for parents
+        if (this.parentAreas.length == 1) {
+            let singleParent = this.parentAreas[0]
+            this.positionSingleArea(singleParent, true);
+        } else if (this.parentAreas.length > 1) {
+            this.leftside_positioning = this.centerNode.getX() + (this.centerNode.getWidth() / 2);
+            this.rightside_positioning = this.leftside_positioning;
+
+            // position each parentarea in the area depending it has parents shift left or right
+            // move upwards downwards to prevent line crossings
+            let orphans: DrawableArea[] = [];
+            let families: DrawableArea[] = [];
+
+            this.parentAreas.forEach(parent => {
+                if (parent.hasParents()) {
+                    families.push(parent);
+                } else {
+                    orphans.push(parent);
+                }
+            })
+            this.positionOrphanAreas(orphans, true);
+            this.positionFamilyAreas(families, true);
+        }
+
     }
 
     positionOrphanAreas(areas: DrawableArea[], up: boolean) {
@@ -221,8 +245,8 @@ export class DrawableArea {
     }
 
     draw(x: number, y: number) {
-        let exactx = this.x + this.x;
-        let exacty = this.y + this.y;
+        let exactx = x + this.x;
+        let exacty = y + this.y;
         this.centerNode.draw(exactx, exacty);
         this.drawConnections(exactx, exacty);
         this.childAreas.forEach(child => {
@@ -381,15 +405,14 @@ export class DrawableArea {
     }
 
     drawLine(startx: number, starty: number, endx: number, endy: number) {
-        /*
-        context2d.beginPath();
-        context2d.moveTo(startx, starty);
-        context2d.lineTo(endx, endy);
-        context2d.setLineWidth(2);
-        context2d.stroke();
-        */
+        Constant.svg.append("line")
+            .attr('x1', startx)
+            .attr('y1', starty)
+            .attr('x2', endx)
+            .attr('y2', endy)
+            .attr("stroke-width", 2)
+            .attr("stroke", "black");
     }
-
 
     setX(x: number) {
         this.x = x;
